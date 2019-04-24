@@ -6,8 +6,12 @@ public class Cars
     public static void main(String[] args) throws InterruptedException
     {
         Semaphore sem = new Semaphore(1);
-        Manager manEven = new Manager(sem,"ahh", 0);
-        Manager manOdd = new Manager(sem,"what", 1);
+
+        Manager manEven = new Manager(sem,"ahh",0);
+        Manager manOdd = new Manager(sem,"what",1);
+        //starting up hell tunnel, give them strength 
+        manEven.run(); 
+        manOdd.run();
 
         int random;
         //enter infinite loop
@@ -88,6 +92,22 @@ class Manager implements Runnable{
     @Override
     public void run()
     {
+        //let cars from this side enter the tunnel
+        while(counter < queue.size())
+        {
+            System.out.println("Right-bound car " + queue.get(counter) + " is in the tunnel.");
+            counter++;
+        }
+        //reset counter to the first car that entered the tunnel and let them all leave in sequence
+        counter = firstCarIndex;
+        while(counter < queue.size())
+        {
+            System.out.println("Right-bound car " + queue.get(counter) + " has left the tunnel.");
+            counter++;
+        }
+    }
+    @Override
+    public void run() {
         int firstCarIndex;
 
         //infinite loop
@@ -98,6 +118,7 @@ class Manager implements Runnable{
             {
                 //Set firstCar to counter
                 firstCarIndex = counter;
+
                 try
                 {
                     //get semaphore lock
