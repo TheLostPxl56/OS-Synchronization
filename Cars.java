@@ -1,3 +1,6 @@
+package semaphore;
+import java.util.concurrent.Semaphore;
+
 public class Cars
 {
     public static void main(String[] args) throws InterruptedException
