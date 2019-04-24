@@ -47,7 +47,7 @@ class Manager implements Runnable{
 		this.sem = sem;
 		this.threadName = threadName;
 		this.num = num;
-		ArrayList<Integer> queue = new ArrayList();
+		ArrayList<Integer> queue = new ArrayList<Integer>();
 		queue.add(num);
     }
 	private void runLeft() throws InterruptedException {
