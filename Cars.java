@@ -67,8 +67,6 @@ class Manager implements Runnable{
             System.out.println("Left-bound car " + queue.get(counter) + " has left the tunnel.");
             counter++;
         }
-        //release lock
-        sem.release();
     }
     //Runs for right manager thread
     private void critRight(int firstCarIndex)
@@ -86,8 +84,6 @@ class Manager implements Runnable{
             System.out.println("Right-bound car " + queue.get(counter) + " has left the tunnel.");
             counter++;
         }
-        //release lock
-        sem.release();
     }
     @Override
     public void run() {
@@ -112,6 +108,9 @@ class Manager implements Runnable{
                 else
                     critLeft(firstCarIndex);
                 //EXIT CRITICAL SECTION---------------------------------------
+
+                //release lock
+                sem.release();
             }
         }
     }
