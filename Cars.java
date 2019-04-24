@@ -6,9 +6,11 @@ public class Cars
     public static void main(String[] args) throws InterruptedException
     {
         Semaphore sem = new Semaphore(1);
-        Manager manEven = new Manager(sem,"ahh");
-        Manager manOdd = new Manager(sem,"what");
-
+        Manager manEven = new Manager(sem,"ahh",0);
+        Manager manOdd = new Manager(sem,"what",1);
+        //starting up hell tunnel, give them strength 
+        manEven.run(); 
+        manOdd.run();
         int random;
         //enter infinite loop
         while(true)
@@ -32,7 +34,7 @@ public class Cars
     //Adds a car to the queue of left or right
     public static void addCar(Manager manager, int leftRight)
     {
-        manager.queue.add(queue.get(queue.size - 1) + 2);
+        manager.queue.add(manager.queue.get(manager.queue.size() - 1) + 2);
     }
 }
 //write class that implements runnable
@@ -42,18 +44,51 @@ class Manager implements Runnable{
     Semaphore sem;
     String threadName;
     int counter = 0;
-	int num;
-	
-	public Manager(Semaphore sem, String threadName,int num) {
-		this.sem = sem;
-		this.threadName = threadName;
-		this.num = num;
-		ArrayList<Integer> queue = new ArrayList<Integer>();
-		queue.add(num);
-	}
+    int num;
+    ArrayList<Integer> queue = new ArrayList<Integer>();
+
+    public Manager(Semaphore sem, String threadName,int num) {
+        this.sem = sem;
+        this.threadName = threadName;
+        this.num = num;
+        queue.add(num);
+    }
     //Runs for left manager thread
-    private void runLeft()
+    private void critLeft(int firstCarIndex)
     {
+        //let cars from this side enter the tunnel
+        while(counter < queue.size())
+        {
+            System.out.println("Left-bound car " + queue.get(counter) + " is in the tunnel.");
+            counter++;
+        }
+        //reset counter to the first car that entered the tunnel and let them all leave in sequence
+        counter = firstCarIndex;
+        while(counter < queue.size())
+        {
+            System.out.println("Left-bound car " + queue.get(counter) + " has left the tunnel.");
+            counter++;
+        }
+    }
+    //Runs for right manager thread
+    private void critRight(int firstCarIndex)
+    {
+        //let cars from this side enter the tunnel
+        while(counter < queue.size())
+        {
+            System.out.println("Right-bound car " + queue.get(counter) + " is in the tunnel.");
+            counter++;
+        }
+        //reset counter to the first car that entered the tunnel and let them all leave in sequence
+        counter = firstCarIndex;
+        while(counter < queue.size())
+        {
+            System.out.println("Right-bound car " + queue.get(counter) + " has left the tunnel.");
+            counter++;
+        }
+    }
+    @Override
+    public void run() {
         int firstCarIndex;
 
         //infinite loop
@@ -68,38 +103,17 @@ class Manager implements Runnable{
                 sem.acquire();
 
                 //ENTER CRITICAL SECTION---------------------------------------
-                //let cars from this side enter the tunnel
-                while(counter < queue.size())
+                if(threadName.equals("ahh"))
                 {
-                    System.out.println("Left-bound car " + queue.get(counter) + " is in the tunnel.");
-                    counter++;
+                    critRight(firstCarIndex);
                 }
-                //reset counter to the first car that entered the tunnel and let them all leave in sequence
-                counter = firstCarIndex;
-                while(counter < queue.size())
-                {
-                    System.out.println("Left-bound car " + queue.get(counter) + " has left the tunnel.");
-                    counter++;
-                }
+                else
+                    critLeft(firstCarIndex);
+                //EXIT CRITICAL SECTION---------------------------------------
+
                 //release lock
                 sem.release();
-                //EXIT CRITICAL SECTION---------------------------------------
             }
         }
-    }
-    //Runs for right manager thread
-    private void runRight()
-    {
-
-    }
-    @Override
-    public void run() {
-        if(threadName.equals("ahh"))
-        {
-            runRight();
-        }
-        else
-            runLeft();
-
     }
 }
