@@ -6,8 +6,8 @@ public class Cars
     public static void main(String[] args) throws InterruptedException
     {
         Semaphore sem = new Semaphore(1);
-        Manager manEven = new Manager(sem,"ahh",0);
-        Manager manOdd = new Manager(sem,"what",1);
+        Manager manEven = new Manager(sem,"ahh");
+        Manager manOdd = new Manager(sem,"what");
 
         int random;
         //enter infinite loop
@@ -86,7 +86,8 @@ class Manager implements Runnable{
         }
     }
     @Override
-    public void run() {
+    public void run()
+    {
         int firstCarIndex;
 
         //infinite loop
@@ -97,20 +98,26 @@ class Manager implements Runnable{
             {
                 //Set firstCar to counter
                 firstCarIndex = counter;
-                //get semaphore lock
-                sem.acquire();
-
-                //ENTER CRITICAL SECTION---------------------------------------
-                if(threadName.equals("ahh"))
+                try
                 {
-                    critRight(firstCarIndex);
-                }
-                else
-                    critLeft(firstCarIndex);
-                //EXIT CRITICAL SECTION---------------------------------------
+                    //get semaphore lock
+                    sem.acquire();
 
-                //release lock
-                sem.release();
+                    //ENTER CRITICAL SECTION---------------------------------------
+                    if (threadName.equals("ahh"))
+                    {
+                        critRight(firstCarIndex);
+                    } else
+                        critLeft(firstCarIndex);
+                    //EXIT CRITICAL SECTION---------------------------------------
+
+                    //release lock
+                    sem.release();
+                }
+                catch(InterruptedException e)
+                {
+                    System.out.println("Interruption");
+                }
             }
         }
     }
