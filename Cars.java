@@ -89,23 +89,7 @@ class Manager implements Runnable{
             counter++;
         }
     }
-    @Override
-    public void run()
-    {
-        //let cars from this side enter the tunnel
-        while(counter < queue.size())
-        {
-            System.out.println("Right-bound car " + queue.get(counter) + " is in the tunnel.");
-            counter++;
-        }
-        //reset counter to the first car that entered the tunnel and let them all leave in sequence
-        counter = firstCarIndex;
-        while(counter < queue.size())
-        {
-            System.out.println("Right-bound car " + queue.get(counter) + " has left the tunnel.");
-            counter++;
-        }
-    }
+    
     @Override
     public void run() {
         int firstCarIndex;
