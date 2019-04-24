@@ -6,8 +6,8 @@ public class Cars
     public static void main(String[] args) throws InterruptedException
     {
         Semaphore sem = new Semaphore(1);
-        Manager manEven = new Manager(sem,"ahh");
-        Manager manOdd = new Manager(sem,"what");
+        Manager manEven = new Manager(sem,"ahh",0);
+        Manager manOdd = new Manager(sem,"what",1);
 
         int random;
         //enter infinite loop
