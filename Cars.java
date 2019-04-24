@@ -9,8 +9,8 @@ public class Cars
 
         Manager manEven = new Manager(sem,"ahh",0);
         Manager manOdd = new Manager(sem,"what",1);
-        //starting up hell tunnel, give them strength 
-        manEven.run(); 
+        //starting up hell tunnel, give them strength
+        manEven.run();
         manOdd.run();
 
         int random;
@@ -21,11 +21,11 @@ public class Cars
 
             if(random == 0)
             {
-                //add car to left manager
+                addCar(manEven, random);
             }
             else
             {
-                //add car to right manager
+                addCar(manOdd, random);
             }
             random = (int)(Math.random() * 1901 + 100);
 
@@ -36,7 +36,17 @@ public class Cars
     //Adds a car to the queue of left or right
     public static void addCar(Manager manager, int leftRight)
     {
-        manager.queue.add(manager.queue.get(manager.queue.size() - 1) + 2);
+        int carNum = manager.queue.get(manager.queue.size() - 1);
+        manager.queue.add(carNum);
+        //print message
+        if(leftRight == 0)
+        {
+            System.out.println("Left-bound car " + carNum + " wants to enter the tunnel.");
+        }
+        else
+        {
+            System.out.println("Right-bound car " + carNum + " wants to enter the tunnel.");
+        }
     }
 }
 //write class that implements runnable
@@ -47,7 +57,7 @@ class Manager implements Runnable{
     String threadName;
     int counter = 0;
     int num;
-    ArrayList<Integer> queue = new ArrayList<Integer>();
+    public ArrayList<Integer> queue = new ArrayList<Integer>();
 
     public Manager(Semaphore sem, String threadName,int num) {
         this.sem = sem;
@@ -89,7 +99,7 @@ class Manager implements Runnable{
             counter++;
         }
     }
-    
+
     @Override
     public void run() {
         int firstCarIndex;
@@ -109,7 +119,7 @@ class Manager implements Runnable{
                     sem.acquire();
 
                     //ENTER CRITICAL SECTION---------------------------------------
-                    if (threadName.equals("ahh"))
+                    if (threadName.equals("what"))
                     {
                         critRight(firstCarIndex);
                     } else
