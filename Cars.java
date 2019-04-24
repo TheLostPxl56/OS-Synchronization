@@ -42,11 +42,15 @@ class Manager implements Runnable{
     Semaphore sem;
     String threadName;
     int counter = 0;
-
-    public Manager(Semaphore sem, String threadName) {
-        this.sem = sem;
-        this.threadName = threadName;
-    }
+	int num;
+	
+	public Manager(Semaphore sem, String threadName,int num) {
+		this.sem = sem;
+		this.threadName = threadName;
+		this.num = num;
+		ArrayList<Integer> queue = new ArrayList<Integer>();
+		queue.add(num);
+	}
     //Runs for left manager thread
     private void runLeft()
     {
