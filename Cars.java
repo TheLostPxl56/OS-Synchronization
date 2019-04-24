@@ -2,9 +2,9 @@ public class Cars
 {
     public static void main(String[] args) throws InterruptedException
     {
-        //define semaphore
-
-        //generate left and right manager threads
+		Semaphore sem = new Semaphore(1);
+		Manager manEven = new Manager(sem,"ahh");
+		manager manOdd = new Manager(sem,"what");
 
         int random;
         //enter infinite loop
@@ -25,4 +25,38 @@ public class Cars
             Thread.sleep(random);
         }
     }
+}
+//write class that implements runnable 
+//this class with 
+class Manager implements Runnable{
+	Semaphore sem;
+	String threadName;
+	public Manager(Semaphore sem, String threadName) {
+		this.sem = sem;
+		this.threadName = threadName;
+	}
+	private void runLeft() {
+		try 
+		{
+			
+		}
+		
+	}
+	private void runRight() {
+		try 
+		{
+			
+		}
+	
+} 
+	@Override
+	public void run() { 
+		if(threadName.equals("ahh"))
+		{
+			runRight();
+		}
+		else
+			runLeft();
+			
+	}
 }
