@@ -1,4 +1,3 @@
-package semaphore;
 import java.util.concurrent.Semaphore;
 import java.util.ArrayList;
 
@@ -42,27 +41,53 @@ class Manager implements Runnable{
 
     Semaphore sem;
     String threadName;
-	int num;
-	public Manager(Semaphore sem, String threadName,int num) {
-		this.sem = sem;
-		this.threadName = threadName;
-		this.num = num;
-		ArrayList<Integer> queue = new ArrayList<Integer>();
-		queue.add(num);
+    int counter = 0;
+
+    public Manager(Semaphore sem, String threadName) {
+        this.sem = sem;
+        this.threadName = threadName;
     }
-	private void runLeft() throws InterruptedException {
-		while(true)
-		{
-			
-		}
-	}
-	private void runRight() throws InterruptedException{
-		while(true)
-		{
-			
-		}
-	
-}
+    //Runs for left manager thread
+    private void runLeft()
+    {
+        int firstCarIndex;
+
+        //infinite loop
+        while(true)
+        {
+            //check queue to see if the counter position exists
+            if(counter < queue.size())
+            {
+                //Set firstCar to counter
+                firstCarIndex = counter;
+                //get semaphore lock
+                sem.acquire();
+
+                //ENTER CRITICAL SECTION---------------------------------------
+                //let cars from this side enter the tunnel
+                while(counter < queue.size())
+                {
+                    System.out.println("Left-bound car " + queue.get(counter) + " is in the tunnel.");
+                    counter++;
+                }
+                //reset counter to the first car that entered the tunnel and let them all leave in sequence
+                counter = firstCarIndex;
+                while(counter < queue.size())
+                {
+                    System.out.println("Left-bound car " + queue.get(counter) + " has left the tunnel.");
+                    counter++;
+                }
+                //release lock
+                sem.release();
+                //EXIT CRITICAL SECTION---------------------------------------
+            }
+        }
+    }
+    //Runs for right manager thread
+    private void runRight()
+    {
+
+    }
     @Override
     public void run() {
         if(threadName.equals("ahh"))
