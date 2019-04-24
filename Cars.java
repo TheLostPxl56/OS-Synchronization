@@ -42,17 +42,27 @@ class Manager implements Runnable{
 
     Semaphore sem;
     String threadName;
-
-    public Manager(Semaphore sem, String threadName) {
-        this.sem = sem;
-        this.threadName = threadName;
+	int num;
+	public Manager(Semaphore sem, String threadName,int num) {
+		this.sem = sem;
+		this.threadName = threadName;
+		this.num = num;
+		ArrayList<Integer> queue = new ArrayList();
+		queue.add(num);
     }
-    private void runLeft() {
-
-    }
-    private void runRight() {
-
-    }
+	private void runLeft() throws InterruptedException {
+		while(true)
+		{
+			
+		}
+	}
+	private void runRight() throws InterruptedException{
+		while(true)
+		{
+			
+		}
+	
+}
     @Override
     public void run() {
         if(threadName.equals("ahh"))
