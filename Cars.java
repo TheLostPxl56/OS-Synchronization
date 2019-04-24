@@ -36,7 +36,7 @@ public class Cars
     //Adds a car to the queue of left or right
     public static void addCar(Manager manager, int leftRight)
     {
-        int carNum = manager.queue.get(manager.queue.size() - 1);
+        int carNum = manager.queue.get(manager.queue.size() - 1) + 2;
         manager.queue.add(carNum);
         //print message
         if(leftRight == 0)
